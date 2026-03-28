@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automatisation TikTok IA — Sakura Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0608;
+  --surface: #130d10;
+  --surface2: #1c141a;
+  --border: #2d1f28;
+  --sakura: #e8547a;
+  --sakura2: #f2a0b5;
+  --sakura3: #fce8ee;
+  --gold: #d4a853;
+  --gold2: #f0c878;
+  --white: #faf5f7;
+  --muted: #8a6878;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* PETAL BG */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 80% 10%, rgba(232,84,122,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 600px at 10% 60%, rgba(212,168,83,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* PETALS */
+.petal {
+  position: fixed;
+  width: 8px; height: 12px;
+  background: rgba(232,84,122,0.25);
+  border-radius: 50% 0 50% 0;
+  pointer-events: none;
+  z-index: 0;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+.wrap { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+/* ── TOPBAR ── */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(10,6,8,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar-logo {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--sakura);
+  letter-spacing: 0.5px;
+}
+.topbar-logo span { color: var(--gold); }
+.topbar-cta {
+  background: var(--sakura);
+  color: #fff;
+  border: none;
+  padding: 9px 22px;
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.topbar-cta:hover { background: #d43d65; transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  padding: 140px 0 80px;
+  text-align: center;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(232,84,122,0.1);
+  border: 1px solid rgba(232,84,122,0.25);
+  color: var(--sakura2);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 7px 16px;
+  border-radius: 2px;
+  margin-bottom: 32px;
+  text-transform: uppercase;
+}
+.hero-eyebrow::before {
+  content: '🌸';
+  font-size: 14px;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+  color: var(--white);
+}
+.hero h1 em {
+  color: var(--sakura);
+  font-style: italic;
+}
+.hero h1 .gold { color: var(--gold); }
+
+.hero-sub {
+  font-size: 18px;
+  color: rgba(250,245,247,0.65);
+  max-width: 560px;
+  margin: 0 auto 16px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.hero-proof {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  font-family: var(--mono);
+}
+.hero-proof span { color: var(--sakura2); }
+
+/* PRICE HERO */
+.price-hero {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 48px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.price-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--sakura), var(--gold), var(--sakura), transparent);
+}
+.price-tag-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--sakura);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.price-old {
+  font-size: 16px;
+  color: var(--muted);
+  text-decoration: line-through;
+  margin-bottom: 2px;
+}
+.price-new {
+  font-family: var(--serif);
+  font-size: 64px;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.price-new sup { font-size: 28px; vertical-align: super; }
+.price-note {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.price-countdown {
+  font-size: 12px;
+  color: var(--gold2);
+  margin-top: 8px;
+  font-family: var(--mono);
+}
+
+.btn-main {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--sakura) 0%, #c23060 100%);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 17px;
+  font-weight: 600;
+  padding: 18px 48px;
+  border-radius: 6px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+  box-shadow: 0 8px 32px rgba(232,84,122,0.3);
+}
+.btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(232,84,122,0.4);
+}
+
+.btn-secondary {
+  display: inline-block;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+.btn-secondary:hover { color: var(--white); border-color: var(--muted); }
+
+.hero-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.trust-item::before {
+  content: '✓';
+  color: var(--sakura);
+  font-weight: 700;
+}
+
+/* DIVIDER */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 64px 0;
+}
+
+/* SECTION TITLE */
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--sakura);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.2;
+  margin-bottom: 16px;
+  color: var(--white);
+}
+.section-title em { color: var(--sakura); font-style: italic; }
+.section-sub {
+  font-size: 16px;
+  color: rgba(250,245,247,0.55);
+  line-height: 1.7;
+  max-width: 560px;
+  font-weight: 300;
+}
+
+/* LIVE BANNER */
+.live-banner {
+  background: rgba(232,84,122,0.08);
+  border: 1px solid rgba(232,84,122,0.2);
+  border-radius: 10px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 48px 0;
+}
+.live-dot {
+  width: 10px; height: 10px;
+  background: var(--sakura);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+  animation: pulse-dot 2s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(232,84,122,0.4);
+}
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 0 rgba(232,84,122,0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(232,84,122,0); }
+  100% { box-shadow: 0 0 0 0 rgba(232,84,122,0); }
+}
+.live-text p { font-size: 14px; color: var(--sakura2); line-height: 1.6; }
+.live-text strong { color: var(--white); font-weight: 600; }
+
+/* WHAT YOU GET */
+.modules-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 32px;
+}
+.module-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  transition: all 0.2s;
+  cursor: default;
+}
+.module-row:first-child { border-radius: 10px 10px 0 0; }
+.module-row:last-child { border-radius: 0 0 10px 10px; }
+.module-row:hover { background: var(--surface2); border-color: rgba(232,84,122,0.2); }
+.module-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  width: 40px;
+  text-align: center;
+  margin-top: 2px;
+}
+.module-content { flex: 1; }
+.module-content h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.module-content p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.module-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  height: fit-content;
+  margin-top: 3px;
+  letter-spacing: 0.5px;
+}
+.tag-free { background: rgba(52,199,89,0.1); color: #34c759; border: 1px solid rgba(52,199,89,0.2); }
+.tag-bonus { background: rgba(212,168,83,0.1); color: var(--gold2); border: 1px solid rgba(212,168,83,0.2); }
+.tag-exclu { background: rgba(232,84,122,0.1); color: var(--sakura2); border: 1px solid rgba(232,84,122,0.2); }
+
+/* FOR WHO */
+.for-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 28px;
+}
+.for-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+.for-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.for-card ul { list-style: none; }
+.for-card ul li {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+.for-card ul li:last-child { border-bottom: none; }
+.for-card ul li::before { flex-shrink: 0; margin-top: 2px; }
+.for-yes li::before { content: '✓'; color: var(--sakura); font-weight: 700; }
+.for-no li::before { content: '✗'; color: #636366; }
+
+/* ROADMAP */
+.roadmap {
+  position: relative;
+  margin-top: 32px;
+}
+.roadmap::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 24px;
+  bottom: 24px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--sakura), var(--gold), transparent);
+}
+.roadmap-item {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding-left: 8px;
+}
+.roadmap-dot {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--mono);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  border: 1px solid;
+}
+.roadmap-body { padding-top: 2px; }
+.roadmap-body h4 { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.roadmap-body p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* PROOF */
+.proof-banner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+  margin-top: 32px;
+  text-align: center;
+}
+.proof-banner h3 {
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.proof-banner p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 500px;
+  margin: 0 auto 20px;
+}
+.proof-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.proof-stat { text-align: center; }
+.proof-stat .num {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--sakura);
+  display: block;
+}
+.proof-stat .label {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+  letter-spacing: 1px;
+}
+
+/* PRICING */
+.pricing-card {
+  background: var(--surface);
+  border: 1px solid rgba(232,84,122,0.3);
+  border-radius: 14px;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-top: 32px;
+}
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sakura), var(--gold), var(--sakura));
+}
+.pricing-badge {
+  display: inline-block;
+  background: rgba(232,84,122,0.15);
+  border: 1px solid rgba(232,84,122,0.3);
+  color: var(--sakura2);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 5px 14px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.pricing-name {
+  font-family: var(--serif);
+  font-size: 28px;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.pricing-desc {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+.pricing-price-wrap { margin-bottom: 28px; }
+.pricing-old {
+  font-size: 16px;
+  color: var(--muted);
+  text-decoration: line-through;
+  margin-bottom: 4px;
+}
+.pricing-price {
+  font-family: var(--serif);
+  font-size: 72px;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.pricing-price sup { font-size: 32px; vertical-align: super; }
+.pricing-note {
+  font-size: 12px;
+  color: var(--gold);
+  font-family: var(--mono);
+  margin-top: 8px;
+  display: block;
+}
+
+.includes {
+  text-align: left;
+  margin-bottom: 32px;
+}
+.includes-title {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.include-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 14px;
+  color: rgba(250,245,247,0.8);
+}
+.include-item:last-child { border-bottom: none; }
+.include-item::before {
+  content: '✦';
+  color: var(--sakura);
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.include-item .highlight {
+  color: var(--sakura2);
+  font-weight: 600;
+}
+
+.countdown-wrap {
+  background: rgba(212,168,83,0.08);
+  border: 1px solid rgba(212,168,83,0.2);
+  border-radius: 8px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  color: var(--gold2);
+  font-family: var(--mono);
+}
+.countdown-wrap strong { color: var(--white); }
+
+.guarantee {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+/* FAQ */
+.faq { margin-top: 32px; }
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 20px 0;
+  cursor: pointer;
+}
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--white);
+  gap: 16px;
+}
+.faq-icon {
+  color: var(--sakura);
+  font-size: 20px;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  font-weight: 300;
+}
+.faq-a {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s;
+}
+.faq-item.open .faq-a { max-height: 200px; padding-top: 12px; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 24px;
+  text-align: center;
+  margin-top: 80px;
+}
+footer p {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+footer .logo-foot {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--sakura);
+  margin-bottom: 10px;
+  display: block;
+}
+footer .logo-foot span { color: var(--gold); }
+
+@media (max-width: 600px) {
+  .for-grid { grid-template-columns: 1fr; }
+  .pricing-card { padding: 28px 20px; }
+  .pricing-price { font-size: 56px; }
+  .proof-stats { gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- PETALS -->
+<script>
+for(let i=0;i<12;i++){
+  const p=document.createElement('div');
+  p.className='petal';
+  p.style.cssText=`left:${Math.random()*100}%;width:${6+Math.random()*8}px;height:${8+Math.random()*10}px;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*10}s;opacity:${0.1+Math.random()*0.3}`;
+  document.body.appendChild(p);
+}
+</script>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-logo">Sakura <span>Academy</span></div>
+  <a href="https://www.skool.com/sakura-business-academy-9729" class="topbar-cta">Rejoindre Gratuitement</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">Nouveau cours · Places limitées</div>
+    <h1>
+      Lance ton Business en Ligne<br>
+      avec <em>l'Automatisation</em><br>
+      <span class="gold">TikTok & l'IA</span>
+    </h1>
+    <p class="hero-sub">
+      Génère des vidéos TikTok automatiquement, construis ton audience, et crée tes premières sources de revenus — même en partant de zéro.
+    </p>
+    <p class="hero-proof">🌸 Sakura Academy · <span>Suivi en live de l'évolution du compte</span></p>
+
+    <div class="price-hero">
+      <div class="price-tag-label">Prix Fondateur — 5 places</div>
+      <div class="price-old">97€</div>
+      <div class="price-new"><sup>€</sup>47</div>
+      <div class="price-note">accès à vie · mises à jour incluses</div>
+      <div class="price-countdown">⚡ Prix monte à 97€ dans 7 jours</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:24px;">
+      <a href="https://www.skool.com/sakura-business-academy-9729" class="btn-main">Rejoindre Gratuitement →</a>
+      <a href="#contenu" class="btn-secondary">Voir le contenu du cours ↓</a>
+    </div>
+
+    <div class="hero-trust">
+      <div class="trust-item">Accès immédiat</div>
+      <div class="trust-item">Coaching 1-1 inclus</div>
+      <div class="trust-item">Mises à jour à vie</div>
+      <div class="trust-item">Paiement sécurisé</div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+
+<!-- LIVE BANNER -->
+<div class="live-banner">
+  <div class="live-dot"></div>
+  <div class="live-text">
+    <p><strong>Ce cours est construit en transparence totale.</strong> Je monte mon propre compte TikTok automatisé en live, je partage toutes les stats, les revenus, les erreurs. Tu ne suis pas juste une théorie — tu regardes le système se construire en temps réel sur mes TikTok.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- POUR QUI -->
+<section>
+  <div class="section-eyebrow">Pour qui c'est</div>
+  <h2 class="section-title">Ce cours est fait pour toi <em>si…</em></h2>
+
+  <div class="for-grid">
+    <div class="for-card for-yes">
+      <h4 style="color:#34c759">✓ C'est pour toi</h4>
+      <ul>
+        <li>Tu veux lancer un business en ligne sans budget énorme</li>
+        <li>Tu es curieux de l'IA et tu veux l'utiliser concrètement</li>
+        <li>Tu veux créer du contenu sans passer des heures devant un écran</li>
+        <li>Tu veux construire une audience TikTok qui travaille pour toi</li>
+        <li>Tu pars de zéro et tu veux un système clé en main</li>
+      </ul>
+    </div>
+    <div class="for-card for-no">
+      <h4 style="color:#636366">✗ Ce n'est pas pour toi</h4>
+      <ul>
+        <li>Tu cherches à devenir riche du jour au lendemain</li>
+        <li>Tu n'es pas prêt à passer quelques heures à configurer le système</li>
+        <li>Tu veux un résultat garanti sans aucun effort</li>
+        <li>Tu n'as aucun intérêt pour le marketing digital</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTENU -->
+<section id="contenu">
+  <div class="section-eyebrow">Ce que tu obtiens</div>
+  <h2 class="section-title">Tout ce qui est <em>inclus</em></h2>
+  <p class="section-sub">Un système complet du débutant à la monétisation. Pas juste de la théorie — des fichiers prêts à l'emploi, des workflows à copier-coller et un accompagnement personnalisé.</p>
+
+  <div class="modules-grid">
+    <div class="module-row">
+      <div class="module-icon">📱</div>
+      <div class="module-content">
+        <h4>Module 01 — Fondamentaux TikTok & IA</h4>
+        <p>L'algorithme TikTok expliqué simplement, créer son compte Pro, introduction aux outils IA vidéo. Les bases pour que ton contenu automatisé performe.</p>
+      </div>
+      <div class="module-tag tag-free">VIDÉO</div>
+    </div>
+    <div class="module-row">
+      <div class="module-icon">🎬</div>
+      <div class="module-content">
+        <h4>Module 02 — Génération Vidéo par l'IA</h4>
+        <p>Sora 2, Kling AI, ElevenLabs, CapCut. Tous les outils du gratuit au premium avec les prompts exacts qui marchent pour le business en ligne.</p>
+      </div>
+      <div class="module-tag tag-free">VIDÉO</div>
+    </div>
+    <div class="module-row">
+      <div class="module-icon">⚙️</div>
+      <div class="module-content">
+        <h4>Module 03 — Automatisation Make.com</h4>
+        <p>Connecter tous les outils entre eux pour que le système tourne sans toi. Workflow complet de la banque d'idées à la publication TikTok.</p>
+      </div>
+      <div class="module-tag tag-free">VIDÉO</div>
+    </div>
+    <div class="module-row">
+      <div class="module-icon">💰</div>
+      <div class="module-content">
+        <h4>Module 04 — Monétisation & Business en ligne</h4>
+        <p>Affiliation, Creator Fund, brand deals, ManyChat. Comment transformer l'audience TikTok en revenus réels dès les premiers abonnés.</p>
+      </div>
+      <div class="module-tag tag-free">VIDÉO</div>
+    </div>
+    <div class="module-row">
+      <div class="module-icon">🚀</div>
+      <div class="module-content">
+        <h4>Module 05 — Plan de Lancement en 7 Jours</h4>
+        <p>Le plan d'action jour par jour pour avoir ton système opérationnel cette semaine. Tout est chronométré et détaillé.</p>
+      </div>
+      <div class="module-tag tag-free">VIDÉO</div>
+    </div>
+    <div class="module-row">
+      <div class="module-icon">⚡</div>
+      <div class="module-content">
+        <h4>Bonus — 4 Workflows Make.com Copy-Paste</h4>
+        <p>Les configurations complètes pour Sora 2, Kling AI, HeyGen et n8n. Tu copies, tu colles, tu lances. Toutes les clés API expliquées.</p>
+      </div>
+      <div class="module-tag tag-bonus">BONUS</div>
+    </div>
+    <div class="module-row">
+      <div class="module-icon">📂</div>
+      <div class="module-content">
+        <h4>Ressources téléchargeables via Google Drive</h4>
+        <p>Plan de cours complet, script de chaque leçon, slides des 5 modules, guide workflows détaillé. Tous les documents accessibles et téléchargeables.</p>
+      </div>
+      <div class="module-tag tag-bonus">DRIVE</div>
+    </div>
+    <div class="module-row">
+      <div class="module-icon">🌸</div>
+      <div class="module-content">
+        <h4>1 Session Coaching 1-1 de 30 min via Calendly</h4>
+        <p>Une session personnalisée pour débloquer ta situation spécifique. On regarde ton compte, ton workflow, ta niche, et on optimise ensemble.</p>
+      </div>
+      <div class="module-tag tag-exclu">EXCLUSIF</div>
+    </div>
+    <div class="module-row">
+      <div class="module-icon">📈</div>
+      <div class="module-content">
+        <h4>Accès aux mises à jour à vie</h4>
+        <p>Le cours évolue avec les outils IA. Chaque nouveau workflow, chaque nouvelle stratégie testée sur mon compte est ajouté automatiquement.</p>
+      </div>
+      <div class="module-tag tag-exclu">À VIE</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ROADMAP -->
+<section>
+  <div class="section-eyebrow">La progression</div>
+  <h2 class="section-title">De zéro à ton premier <em>revenu automatisé</em></h2>
+
+  <div class="roadmap">
+    <div class="roadmap-item">
+      <div class="roadmap-dot" style="background:rgba(232,84,122,0.15);border-color:rgba(232,84,122,0.4);color:var(--sakura);">J1</div>
+      <div class="roadmap-body">
+        <h4>Semaine 1 — Les bases & le système</h4>
+        <p>Tu comprends l'algorithme, tu crées ton compte, tu génères ta première vidéo IA manuellement. Tu vois comment ça marche avant de tout automatiser.</p>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot" style="background:rgba(212,168,83,0.15);border-color:rgba(212,168,83,0.4);color:var(--gold2);">J7</div>
+      <div class="roadmap-body">
+        <h4>Semaine 2 — Automatisation complète</h4>
+        <p>Tu construis le workflow Make.com. Ton système génère et publie automatiquement 1 à 3 vidéos par jour sans que tu touches à ton téléphone.</p>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot" style="background:rgba(52,199,89,0.15);border-color:rgba(52,199,89,0.4);color:#34c759;">J14</div>
+      <div class="roadmap-body">
+        <h4>Semaine 3 — Monétisation activée</h4>
+        <p>Tes liens d'affiliation sont en place, ManyChat envoie tes liens en DM automatiquement. Tes premières commissions arrivent.</p>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot" style="background:rgba(0,122,255,0.15);border-color:rgba(0,122,255,0.4);color:#64aef5;">J30</div>
+      <div class="roadmap-body">
+        <h4>Mois 1 — Le système tourne seul</h4>
+        <p>90+ vidéos publiées automatiquement. Les premières données pour optimiser ta niche. Tu commences à voir ce qui marche et tu scales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PREUVE SOCIALE / TRANSPARENCE -->
+<section>
+  <div class="section-eyebrow">Transparence totale</div>
+  <h2 class="section-title">Je construis tout ça <em>en direct</em></h2>
+
+  <div class="proof-banner">
+    <h3>Le cours évolue avec mes résultats</h3>
+    <p>Je montre l'évolution de mon propre compte TikTok sur mes vidéos. Chaque nouveauté testée et validée est ajoutée au cours. Tu rejoins une progression en temps réel, pas un cours figé.</p>
+    <div class="proof-stats">
+      <div class="proof-stat">
+        <span class="num">5</span>
+        <span class="label">Modules complets</span>
+      </div>
+      <div class="proof-stat">
+        <span class="num">4</span>
+        <span class="label">Workflows IA</span>
+      </div>
+      <div class="proof-stat">
+        <span class="num">∞</span>
+        <span class="label">Mises à jour</span>
+      </div>
+      <div class="proof-stat">
+        <span class="num">1-1</span>
+        <span class="label">Coaching inclus</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-eyebrow">Tarif</div>
+  <h2 class="section-title">Rejoins <em>maintenant</em> au prix fondateur</h2>
+  <p class="section-sub">5 places au tarif de lancement. Après ça, le prix monte à 97€ puis à 197€ quand les premiers résultats du compte seront publiés.</p>
+
+  <div class="pricing-card">
+    <div class="pricing-badge">🌸 Prix Fondateur · 5 places</div>
+    <div class="pricing-name">Automatisation TikTok IA</div>
+    <div class="pricing-desc">Accès complet · Coaching inclus · Mises à jour à vie</div>
+
+    <div class="pricing-price-wrap">
+      <div class="pricing-old">Valeur réelle : 297€</div>
+      <div class="pricing-price"><sup>€</sup>47</div>
+      <span class="pricing-note">⚡ Monte à 97€ dans 7 jours</span>
+    </div>
+
+    <div class="countdown-wrap">
+      🔥 <strong>5 places fondateur disponibles.</strong> Après ces 5 places, le cours passe à 97€ sans négociation possible.
+    </div>
+
+    <div class="includes">
+      <div class="includes-title">Ce qui est inclus</div>
+      <div class="include-item">5 modules vidéo complets <span class="highlight" style="margin-left:auto">Accès immédiat</span></div>
+      <div class="include-item">4 workflows Make.com copy-paste (Sora 2, Kling, HeyGen, n8n)</div>
+      <div class="include-item">Tous les docs téléchargeables via Google Drive</div>
+      <div class="include-item"><span class="highlight">1 session coaching 1-1 de 30 min</span> via Calendly</div>
+      <div class="include-item">Accès aux mises à jour à vie</div>
+      <div class="include-item">Suivi de l'évolution du compte TikTok en live</div>
+    </div>
+
+    <a href="https://www.skool.com/sakura-business-academy-9729" class="btn-main" style="display:block;width:100%;text-align:center;font-size:18px;padding:20px;">
+      Rejoindre Gratuitement →
+    </a>
+
+    <div class="guarantee">
+      <span>🔒</span>
+      <span>Paiement sécurisé · Accès immédiat après paiement</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section>
+  <div class="section-eyebrow">Questions fréquentes</div>
+  <h2 class="section-title">Tu as des <em>questions ?</em></h2>
+
+  <div class="faq">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Est-ce que je dois avoir un compte TikTok déjà existant ?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Non, on repart de zéro ensemble. Le cours commence par la création et la configuration du compte TikTok Pro adapté à l'automatisation.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Combien ça coûte les outils en plus du cours ?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Tu peux démarrer à 0€ avec Kling AI (66 vidéos/mois gratuit), ElevenLabs (10 000 caractères gratuits), CapCut (100% gratuit), Make.com (1 000 opérations gratuites) et Buffer (10 posts gratuits). Le cours montre comment tout faire gratuitement avant d'investir.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Tu n'as pas encore de résultats prouvés, pourquoi payer ?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">C'est exactement pour ça que le prix est à 47€ et non 297€. Tu paies le prix d'accès à un système construit avec soin, des workflows qui fonctionnent techniquement, et un accompagnement personnalisé. L'évolution du compte est publique et visible sur mes TikTok — tu peux suivre les résultats en direct.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Comment fonctionne le coaching 1-1 ?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Après ton inscription, tu reçois un lien Calendly pour réserver ta session de 30 minutes. On fait un appel vidéo où on regarde ton compte, ton workflow Make.com, ta niche, et on optimise ensemble selon ta situation.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Est-ce que le prix va vraiment monter ?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Oui. 47€ pour 5 places fondateurs uniquement. Ensuite 97€ au lancement officiel. Puis 197€ quand les premiers résultats du compte TikTok seront publiés et prouvés. C'est une stratégie de prix progressive et transparente.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>J'ai zéro compétence technique, c'est accessible ?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Oui. Le cours est conçu pour les débutants complets. Chaque étape est expliquée avec des captures d'écran, des vidéos et des blocs copy-paste. Si tu bloques, le coaching 1-1 est là pour ça.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FINAL CTA -->
+<section style="text-align:center;padding:40px 0 80px;">
+  <div class="section-eyebrow" style="justify-content:center;display:flex;">Dernière chance</div>
+  <h2 class="section-title" style="max-width:500px;margin:0 auto 16px;">Rejoins les premiers avant que le prix monte</h2>
+  <p class="section-sub" style="margin:0 auto 36px;">5 places à 47€. Coaching 1-1 inclus. Accès à vie. Le système qui fait tourner un compte TikTok pendant que tu dors.</p>
+  <a href="https://www.skool.com/sakura-business-academy-9729" class="btn-main" style="font-size:18px;padding:20px 56px;">
+    🌸 Rejoindre Gratuitement
+  </a>
+  <div class="hero-trust" style="margin-top:24px;">
+    <div class="trust-item">5 places seulement</div>
+    <div class="trust-item">Accès immédiat</div>
+    <div class="trust-item">Coaching inclus</div>
+    <div class="trust-item">Prix monte dans 7 jours</div>
+  </div>
+</section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="logo-foot">Sakura <span>Academy</span></span>
+  <p>Business en ligne · IA · Marketing Digital · Automatisation TikTok</p>
+  <p style="margin-top:8px;font-size:11px;opacity:0.5;">© 2025 Sakura Academy · Tous droits réservés</p>
+</footer>
+
+<script>
+function toggleFaq(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
+}
+
+// Smooth entrance
+document.addEventListener('DOMContentLoaded', () => {
+  const els = document.querySelectorAll('.hero h1, .hero-sub, .hero-proof, .price-hero, .btn-main');
+  els.forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s`;
+    setTimeout(() => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, 100);
+  });
+});
+</script>
+</body>
+</html>
